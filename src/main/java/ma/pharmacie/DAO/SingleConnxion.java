@@ -1,15 +1,15 @@
-package DAO;
+package ma.pharmacie.DAO;
 
-import java.io.IOException;
-import java.io.InputStream;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
+
 
 
 
 public class SingleConnxion{
+
     public static Connection getConnection() {
         Connection con = null;
 

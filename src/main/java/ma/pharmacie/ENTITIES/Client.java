@@ -1,2 +1,3 @@
-package Entities;public class Client {
+package ma.pharmacie.ENTITIES;
+public class Client {
 }

@@ -1,2 +1,3 @@
-package Entities;public class Personnel {
+package ma.pharmacie.ENTITIES;
+public class Personnel {
 }

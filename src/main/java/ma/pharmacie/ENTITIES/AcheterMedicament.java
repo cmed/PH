@@ -1,4 +1,4 @@
-package Entities;
+package ma.pharmacie.ENTITIES;
 
 public class AcheterMedicament {
 }
