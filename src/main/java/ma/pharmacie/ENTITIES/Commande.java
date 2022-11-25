@@ -1,2 +1,5 @@
-package ma.pharmacie.ENTITIES;public class Commande {
+package ma.pharmacie.ENTITIES;
+
+
+public class Commande {
 }

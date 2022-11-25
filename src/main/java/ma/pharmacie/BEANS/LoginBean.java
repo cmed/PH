@@ -1,8 +1,19 @@
 package ma.pharmacie.BEANS;
+import ma.pharmacie.DAO.DbPharmacie;
+import ma.pharmacie.ENTITIES.Medicament;
+
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.sql.*;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Named
@@ -11,44 +22,26 @@ import java.sql.Connection;
 public class LoginBean {
 
 
-    String UserName;
-    private String Password;
-    public String getUserName() {
-        return UserName;
-    }
+    private DbPharmacie dbPharmacie;
 
-    public void setUserName(String userName) {
-        UserName = userName;
+    public LoginBean() throws Exception {
+
+        dbPharmacie = DbPharmacie.getInstance();
     }
 
 
-    public String getPassword() {
-        return Password;
+
+
+
+    private void addErrorMessage(Exception ex) {
+        FacesMessage message = new FacesMessage(ex.getMessage());
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    public void setPassword(String password) {
-        Password = password;
-    }
 
-    public String LoginState() throws SQLException, ClassNotFoundException {
-        Connection connection= ma.pharmacie.DAO.SingleConnxion.getConnection();
-        String sql="SELECT Username, Password FROM users WHERE Username='"+UserName+"'AND Password='"+Password+"'";
-        int i=0;
-        try(Statement stmt = connection.createStatement()){
-            ResultSet rs = stmt.executeQuery(sql);
-            while(rs.next()){
-                i++;
-            }
-        }
-        catch(Exception e){
-            System.out.println(e);
-        }
-        if(i==0){
-            return "Login";
-        }
-        else{
-            return "index" ;
-        }
-    }
+
+
+
+
 
 }

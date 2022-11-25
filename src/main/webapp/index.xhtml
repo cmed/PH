@@ -11,44 +11,34 @@
 
 <h:body>
 
-
+<h1>ADD USERS
+</h1>
 
     <p style="padding-left: 40%">
-        <h:outputText value="ID" style="font-size: 30px"/>
+        <h:outputText value="password" style="font-size: 30px"/>
         <br/>
-        <h:inputText id="ID" value="#{fonctionImplementation.idMEDICAMENT}" style="width: 50%"/>
+        <h:inputText id="password" value="#{saveuser.password}" style="width: 50%"/>
         <br/><br/>
     </p>
 
     <p style="padding-left: 40%">
-        <h:outputText value="designation" style="font-size: 30px"/>
+        <h:outputText value="username" style="font-size: 30px"/>
         <br/>
-        <h:inputText id="designation" value="#{fonctionImplementation.designation}" style="width: 50%"/>
+        <h:inputText id="username" value="#{saveuser.username}" style="width: 50%"/>
+        <br/><br/>
+    </p>
+    <p style="padding-left: 40%">
+        <h:outputText value="ROLE" style="font-size: 30px"/>
+        <br/>
+        <h:inputText id="ROLE" value="#{saveuser.role}" style="width: 50%"/>
         <br/><br/>
     </p>
 
 
-    <p style="padding-left: 40%">
-        <h:outputText value="Prix" style="font-size: 30px"/>
-        <br/>
-        <h:inputText id="prix" value="#{fonctionImplementation.prix}" style="width: 50%"/>
-        <br/><br/>
-    </p>
-    <p style="padding-left: 40%">
-        <h:outputText value="TVA" style="font-size: 30px"/>
-        <br/>
-        <h:inputText id="TVA" value="#{fonctionImplementation.TVA}" style="width: 50%"/>
-        <br/><br/>
-    </p>
 
-    <p style="padding-left: 40%">
-        <h:outputText value="quantite" style="font-size: 30px"/>
-        <br/>
-        <h:inputText id="quantite" value="#{fonctionImplementation.quantiteMedicament}" style="width: 50%"/>
-        <br/><br/>
-    </p>
     <p style="margin-left: 700px">
-        <h:commandButton value="ADD" action="#{fonctionImplementation.saveMedicament()}" style="width: 20%"/>
+        <h:commandButton action="" style="width: 20%"/>
+
     </p>
 
 

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsf/core">
+
+
+
+<h:dataTable value="#{employeeController.loadEmployees()}" var="employee" border="3">
+
+
+    <h:column>
+
+        <c:facet name="header" border="2">ID</c:facet>
+        #{employeeController.employees.id}
+
+    </h:column>
+
+
+
+   <h:column>
+
+      <c:facet name="header" border="2">Name</c:facet>
+      #{employeeController.employees.name}
+
+   </h:column>
+   <h:column>
+
+      <c:facet name="header">Department</c:facet>
+      #{employeeController.employees.departement}
+
+   </h:column>
+   <h:column>
+
+      <c:facet name="header">Email</c:facet>
+      #{employeeController.employees.email}
+
+   </h:column>
+
+</h:dataTable>
+</html>

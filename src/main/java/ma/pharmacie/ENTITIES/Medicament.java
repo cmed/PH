@@ -1,4 +1,17 @@
-package ma.pharmacie.ENTITIES;public class Medicament {
+
+
+
+
+
+package ma.pharmacie.ENTITIES;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
+
+@Named
+@ApplicationScoped
+
+public class Medicament {
 
     private int idMEDICAMENT;
     private String  designation;
