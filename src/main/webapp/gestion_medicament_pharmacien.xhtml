@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsf/core" >
+
+<c:metadata>
+    <c:event listener="#{fonctionImplementation.loadMedicament()}" type="preRenderView" />
+</c:metadata>
+
+<h:body>
+    <ui:insert name = "header" >
+        <ui:include src = "header.xhtml" />
+    </ui:insert>
+
+
+    <h2>Stock de medicament</h2>
+
+    <br/>
+    <h:form>
+        <h:dataTable binding="#{table}"  value="#{fonctionImplementation.medicaments}" var="med" border="1">
+
+
+
+            <h:column>
+                <c:facet name = "header">ID</c:facet>
+                <h:outputText value="#{table.rowIndex + 1}"/>
+              <!---  #{med.idMEDICAMENT}             !-->
+            </h:column>
+
+
+            <h:column>
+                <c:facet name = "header">DESIGNATION</c:facet>
+                #{med.designation}
+            </h:column>
+
+            <h:column>
+
+                <c:facet name="header">QUANTITE</c:facet>
+                #{med.quantiteMedicament}
+
+            </h:column>
+            <h:column>
+
+                <c:facet name="header">PRIX HORS TAXE</c:facet>
+                #{med.prix}
+
+            </h:column>
+
+            <h:column>
+
+                <c:facet name="header">Actions</c:facet>
+                <h:commandLink value="Delete"
+                               onclick="if (!confirm('Are you sure want to delete this employee?')) return false"
+                               action="#{fonctionImplementation.deleteMedicament(med.idMEDICAMENT)}"/>
+
+            </h:column>
+
+
+
+
+
+
+
+            <h:column>
+                <f:facet name="header">ADD</f:facet>
+                <h:commandLink value="Ajouter" action="form_medicament.xhtml"/>
+            </h:column>
+
+        </h:dataTable>
+    </h:form>
+
+
+    <h:messages globalOnly="true"/>
+
+    <ui:insert name = "footer" >
+        <ui:include src = "footer.xhtml" />
+    </ui:insert>
+</h:body>
+</html>
+

@@ -5,14 +5,23 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:c="http://xmlns.jcp.org/jsf/core" >
 
-
+<c:metadata>
+    <c:event listener="#{fonctionImplementation.loadMedicament()}" type="preRenderView" />
+</c:metadata>
 <h:body>
+<h:form>
+    <h:outputLabel>Designation</h:outputLabel>
+    <h:inputText value="#{medicament.designation}" id="designation" />
+    <h:commandButton value="Save" action="#{fonctionImplementation.searchMedicament(medicament.designation)}"/>
+</h:form>
     <ui:insert name = "header" >
         <ui:include src = "header.xhtml" />
     </ui:insert>
-
+    <ui:insert name = "header" >
+        <ui:include src = "search1.xhtml" />
+    </ui:insert>
     <h:graphicImage url="/resources/images/commingsoon.png" style="display: block;margin-left: auto;margin-right: auto"/>
 
     <ui:insert name = "footer" >

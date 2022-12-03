@@ -37,7 +37,15 @@ public class FonctionpharmacienImplementation implements PharmacienFonction {
     }
     public List<Employee> getEmployees () {return employees;}
 
+    private void addErrorMessage(Exception ex) {
+        FacesMessage message = new FacesMessage(ex.getMessage());
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
+    /***************************************************************************
+     * CRUD EMPLOYEES
+     *
+     * ***************************************************************************/
     public List<Employee> loadEmployees () {
         employees.clear();
         try {
@@ -47,16 +55,6 @@ public class FonctionpharmacienImplementation implements PharmacienFonction {
         }
         return employees;
     }
-
-
-
-
-
-    private void addErrorMessage(Exception ex) {
-        FacesMessage message = new FacesMessage(ex.getMessage());
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-
     @Override
     public String saveEmploye(Employee employee) throws SQLException, ClassNotFoundException {
 
@@ -65,40 +63,49 @@ public class FonctionpharmacienImplementation implements PharmacienFonction {
             }catch (Exception ex) {
                 addErrorMessage (ex);
             }
-            return  "home";
+            return  "gestion_employe_pharmacien";
         }
 
 
     @Override
     public List<Employee> searchEmployee(String motcle) {
+        employees.clear();
+        try {
+            employees= dbPharmacie.searchEmployee(motcle);
+        }catch (Exception ex) {
+            addErrorMessage (ex);
+        }
+        return employees;
+    }
+
+    @Override
+    public Employee getEmployee(int id) {
         return null;
     }
 
     @Override
-    public Medicament getEmployee(int id) {
+    public Employee updateEmployee(Employee p) {
         return null;
     }
 
     @Override
-    public Medicament updateEmployee(Medicament p) {
-        return null;
-    }
-
-    @Override
-    public String deleteEmployee(int id) {
+    public String deleteEmployee(Employee employee) {
 
             try {
-                dbPharmacie.deleteEmployee(id);
+                dbPharmacie.deleteEmployee(employee);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return "home";
+            return "gestion_employe_pharmacien";
         }
 
 
 
 
-
+    /***************************************************************************
+     * CRUD COMMANDES
+     *
+     * ***************************************************************************/
 
 
 
@@ -115,12 +122,12 @@ public class FonctionpharmacienImplementation implements PharmacienFonction {
     }
 
     @Override
-    public Medicament getcommande(int id) {
+    public Commande getcommande(int id) {
         return null;
     }
 
     @Override
-    public Medicament updatecommande(Medicament p) {
+    public Commande updatecommande(Commande p) {
         return null;
     }
 

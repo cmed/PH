@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsf/core">
+
+
+
+<h:body>
+<h:form>
+
+<h:inputText value="#{medicament.designation}"/>
+<h:commandButton  value="chercher" action="#{fonctionImplementation.searchMedicament(medicament.designation)}"/>
+</h:form>
+
+
+
+<h2>medicament recherché</h2>
+
+<br/>
+<h:form>
+   <h:dataTable value="#{fonctionImplementation.medicaments}" var="med" border="1">
+
+
+
+      <h:column>
+         <c:facet name = "header">ID</c:facet>
+         #{med.idMEDICAMENT}
+      </h:column>
+
+
+      <h:column>
+         <c:facet name = "header">DESIGNATION</c:facet>
+         #{med.designation}
+      </h:column>
+
+      <h:column>
+
+         <c:facet name="header">QUANTITE</c:facet>
+         #{med.quantiteMedicament}
+
+      </h:column>
+      <h:column>
+
+         <c:facet name="header">PRIX</c:facet>
+         #{med.prix}
+
+      </h:column>
+
+      <h:column>
+
+         <c:facet name="header"></c:facet>
+         <h:commandButton value="Vendre" action="vendre"/>
+      </h:column>
+
+   </h:dataTable>
+</h:form>
+</h:body>
+</html>

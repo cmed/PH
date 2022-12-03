@@ -4,6 +4,7 @@ import ma.pharmacie.ENTITIES.Medicament;
 import ma.pharmacie.ENTITIES.User;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -12,8 +13,8 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static org.primefaces.component.keyboard.KeyboardBase.PropertyKeys.password;
 
 @Named
 @ApplicationScoped
@@ -23,6 +24,8 @@ public class DbPharmacie {
     private String username;
     private String password;
     private String role;
+
+    private Map<String,Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 
     public String getUsername() {
         return username;
@@ -49,7 +52,7 @@ public class DbPharmacie {
     }
 
     private static DbPharmacie instance;
-    private DataSource datasource;
+    private static DataSource datasource;
     private String jndiName = "java:comp/env/jdbc/pharma";
 
     public static DbPharmacie getInstance() throws Exception {
@@ -59,7 +62,7 @@ public class DbPharmacie {
         return instance;
     }
 
-    private DbPharmacie() throws Exception {
+    DbPharmacie() throws Exception {
         datasource = getDataSource();
     }
 
@@ -72,30 +75,41 @@ public class DbPharmacie {
     /*********************************************************************
      GESTION DES AUTHENTIFICATIONS
      *********************************************************************/
-
     public String loginState() throws SQLException, ClassNotFoundException {
-
+        String rol="" ;
         Connection connection = datasource.getConnection();
         int i = 0;
-        String sql="SELECT Username, Password FROM users WHERE Username='"+username+"'AND Password='"+password+"'";
-
+        String sql="SELECT Username, Password , role FROM users WHERE Username='"+username+"'AND Password='"+password+"'";
         try(
 
                 Statement stmt = connection.createStatement()){
                 ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()){
+                rol=(rs.getString(3));
                 i++;
             }
+
         }
         catch(Exception e){
             System.out.println(e);
         }
+        connection.close();
         if (i==0)
-            return "login";
-        else
-            return "home";
-    }
+        {
+            return "login";}
+        else if (i!=0 && rol.equals("pharmacien")){
 
+            return "home_pharmacien";}
+        else if ( i!=0 && rol.equals("employe"))
+        {
+
+            return "home_employe";}
+        else
+            return "login";
+    }
+    public String logout() throws SQLException, ClassNotFoundException {
+        return "login";
+    }
 
     /*********************************************************************
 GESTION DES EMPLOYES
@@ -112,17 +126,20 @@ public List<Employee> getEmploye() throws Exception {
         resultSet = statement.executeQuery("select * from employe");
         while (resultSet.next()) {
             Employee employ = new Employee();
-            employ.setIdemploye(resultSet.getInt("Idemlopye"));
+            employ.setIdemploye(resultSet.getInt("Idemploye"));
             employ.setNomemploye(resultSet.getString("nomemploye"));
             employ.setPrenomemploye(resultSet.getString("prenomemploye"));
             employ.setSalaire(resultSet.getDouble("salaire"));
+            employ.setCin(resultSet.getString("cin"));
 
             employees.add(employ);
+
         }
 
     } catch (Exception ex) {
         ex.printStackTrace();
     }
+    connection.close();
     return employees;
 }
 
@@ -144,27 +161,61 @@ public List<Employee> getEmploye() throws Exception {
             statement.setDouble(4, employee.getSalaire());
 
             statement.execute();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
+        connection.close();
     }
 
-    public void deleteEmployee(int id) {
+        public List<Employee> searchEmployee(String id) throws SQLException {
+            Connection connection = null;
+
+            Statement statement = null;
+            List<Employee> employerecherche = new ArrayList<>();
+            try {
+                connection = datasource.getConnection();
+                statement = connection.createStatement();
+                String sql = "select * from employe where nomemploye='" + id + "' ";
+                ResultSet resultSet = statement.executeQuery(sql);
+                while (resultSet.next()) {
+                    Employee employ = new Employee();
+                    employ.setIdemploye(resultSet.getInt("Idemploye"));
+                    employ.setNomemploye(resultSet.getString("nomemploye"));
+                    employ.setPrenomemploye(resultSet.getString("prenomemploye"));
+                    employ.setSalaire(resultSet.getDouble("salaire"));
+                    employ.setCin(resultSet.getString("CIN"));
+                    employ.setDate_naissance(resultSet.getDate("date_naissance"));
+                    employ.setDate_recrutement(resultSet.getDate("daterecrutementemploye"));
+                    employerecherche.add(employ);
+
+
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            connection.close();
+            return employerecherche;
+        }
+
+
+    public void deleteEmployee(Employee employee) throws SQLException {
 
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
             connection = datasource.getConnection();
-            String sql = "DELETE FROM employe WHERE id=?";
+            String sql = "DELETE FROM employe WHERE Idemploye=?";
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
+            statement.setInt(1,employee.getIdemploye()  );
             statement.execute();
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        connection.close();
     }
     /*********************************************************************
      GESTION DES MEDICAMENTS
@@ -187,11 +238,14 @@ public List<Employee> getEmploye() throws Exception {
                 medicament.setQuantiteMedicament(resultSet.getInt("quantitemedicament"));
 
                 medicaments.add(medicament);
+
+
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        connection.close();
         return medicaments;
     }
 
@@ -212,26 +266,111 @@ public List<Employee> getEmploye() throws Exception {
             statement.setInt(3, medicament.getQuantiteMedicament());
 
             statement.execute();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
+        connection.close();
     }
 
-    public void deleteMedicament(int id) {
+
+    public void deleteMedicament(Medicament medicament) throws SQLException {
 
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
             connection = datasource.getConnection();
-            String sql = "DELETE FROM medicament WHERE id=?";
+            String sql = "DELETE FROM medicament WHERE idMEDICAMENT=?";
             statement = connection.prepareStatement(sql);
-            statement.setInt(1, id);
+            statement.setInt(1, medicament.getIdMEDICAMENT());
             statement.execute();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        connection.close();
     }
+
+
+    public List<Medicament> search(String id) throws SQLException {
+        Connection connection = null;
+
+        Statement statement = null;
+        List<Medicament> medicamentrecherche = new ArrayList<>();
+        try {
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            String sql = "select * from medicament where designation='" + id + "' ";
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                Medicament medoc = new Medicament();
+                medoc.setIdMEDICAMENT(resultSet.getInt("IdMEDICAMENT"));
+                medoc.setDesignation(resultSet.getString("designation"));
+                medoc.setPrix(resultSet.getDouble("prix"));
+                medoc.setQuantiteMedicament(resultSet.getInt("quantitemedicament"));
+                medoc.setTVA(resultSet.getDouble("TVA"));
+                medicamentrecherche.add(medoc);
+
+
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        connection.close();
+   return medicamentrecherche;
+    }
+
+
+    public String   getonemedicament(int id) throws SQLException {
+        Medicament medicament = null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try{
+            connection = datasource.getConnection();
+            statement = (PreparedStatement) connection.createStatement();
+            String sql = "select * from medicament where designation='" + id + "' ";
+            ResultSet resultSet = statement.executeQuery(sql);
+
+
+            resultSet.next();
+
+            medicament.setIdMEDICAMENT(resultSet.getInt("IdMEDICAMENT"));
+            medicament.setDesignation(resultSet.getString("designation"));
+            medicament.setPrix(resultSet.getDouble("prix"));
+            medicament.setQuantiteMedicament(resultSet.getInt("quantitemedicament"));
+            medicament.setTVA(resultSet.getDouble("TVA"));
+
+            sessionMap.put("editMedicament", medicament);
+
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        connection.close();
+        return "edit" ;
+    }
+
+
+    public void updateMedicament(Medicament medicament) throws SQLException {
+
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = datasource.getConnection();
+            String query = "update medicament set designation = ?,prix = ?, quantitemedicament=? where idMEDICAMENT = ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1,medicament.getDesignation() );
+            statement.setDouble(2,medicament.getPrix() );
+            statement.setInt(3,medicament.getQuantiteMedicament() );
+            statement.setInt(4, medicament.getIdMEDICAMENT());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        connection.close();
+    }
+
 }

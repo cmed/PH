@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsf/core"
+      xmlns:f="http://java.sun.com/jsf/core">
+<c:metadata>
+      <c:event listener="#{fonctionpharmacienImplementation.loadEmployees()}" type="preRenderView" />
+</c:metadata>
+
+<h:body>
+    <ui:insert name = "header" >
+        <ui:include src = "header.xhtml" />
+    </ui:insert>
+
+
+
+    <h2>Gestion des employés</h2>
+
+    <h:form>
+        <h:dataTable binding="#{table}"  value="#{fonctionpharmacienImplementation.employees}" var="employ" border="2">
+
+
+
+            <h:column>
+                <c:facet name = "header">ID</c:facet>
+                <h:outputText value="#{table.rowIndex + 1}"/>
+                <!---  #{med.idMEDICAMENT}             !-->
+            </h:column>
+
+
+                <h:column>
+                    <c:facet name = "header">NOM</c:facet>
+                    #{employ.nomemploye}
+                </h:column>
+
+            <h:column>
+                <c:facet name="header">PRENOM</c:facet>
+                #{employ.prenomemploye}
+            </h:column>
+
+            <h:column>
+                <c:facet name="header">CIN</c:facet>
+                #{employ.cin}
+            </h:column>
+
+
+
+            <h:column>
+                <c:facet name="header">SALAIRE</c:facet>
+                #{employ.salaire}
+            </h:column>
+
+            <h:column>
+
+                <c:facet name="header">ACTION</c:facet>
+                <h:commandButton value="Supprimer" onclick="if (!confirm('Are you sure want to delete this employee?')) return false"
+                               action="#{fonctionpharmacienImplementation.deleteEmployee(employ)}"/>
+            </h:column>
+
+
+
+
+
+
+
+
+        </h:dataTable>
+
+
+        <h:commandButton value="Ajouter" action="form_employe"/>
+    </h:form>
+
+    <h:messages globalOnly="true"/>
+    <ui:insert name = "footer" >
+        <ui:include src = "footer.xhtml" />
+    </ui:insert>
+</h:body>
+</html>
+

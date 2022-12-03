@@ -6,7 +6,9 @@
 package ma.pharmacie.ENTITIES;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import java.util.Map;
 
 @Named
 @ApplicationScoped

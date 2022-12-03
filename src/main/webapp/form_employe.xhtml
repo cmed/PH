@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:body>
+    <ui:insert name = "header" >
+        <ui:include src = "header.xhtml" />
+    </ui:insert>
+
+    <div>
+        <h:form>
+            <h:panelGrid columns="3">
+
+                <h:outputLabel>NOM</h:outputLabel>
+                <h:inputText value="#{employee.nomemploye}" id="nom" required="true" requiredMessage="champ obligatoire"/>
+                <br/>
+                 <h:outputLabel>PRENOM</h:outputLabel>
+                <h:inputText value="#{employee.prenomemploye}" id="prenom" required="true" requiredMessage="champ obligatoire"/>
+                <h:outputLabel>CIN</h:outputLabel>
+                <h:inputText value="#{employee.cin}" id="CIN" required="true" requiredMessage="champ obligatoire"/>
+
+                <br/>
+                <br/>
+                <h:outputLabel>SALAIRE</h:outputLabel>
+                <h:inputText value="#{employee.salaire}" id="salaire" required="true" requiredMessage="Email is mandatory"/>
+
+                <br/>
+
+                <h:commandButton value="Save" action="#{fonctionpharmacienImplementation.saveEmploye(employee)}"/>
+            </h:panelGrid>
+        </h:form>
+    </div>
+
+    <ui:insert name = "footer" >
+        <ui:include src = "footer.xhtml" />
+    </ui:insert>
+</h:body>
+</html>
+

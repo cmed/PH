@@ -10,10 +10,10 @@ import java.util.List;
 public interface Fonction {
 
     public String saveMedicament (Medicament medicament) throws SQLException, ClassNotFoundException;
-    public List<Medicament> searchMedicament (String mc);
+    public List<Medicament> searchMedicament (String mc)throws SQLException, ClassNotFoundException;
     public Medicament getMedicament(int id);
-    public Medicament updateMedicament( Medicament p);
-    public String deleteMedicament(int id);
+    public String updateMedicament( Medicament medicament) throws SQLException, ClassNotFoundException;
+    public String deleteMedicament(Medicament medicament) throws SQLException, ClassNotFoundException;
 
 
 

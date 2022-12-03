@@ -10,25 +10,27 @@ import java.util.List;
 
 public interface PharmacienFonction {
 
-
+    /***************************************************************************
+     * CRUD EMPLOYEES interfaces
+     *
+     * ***************************************************************************/
     public String saveEmploye (Employee employee) throws SQLException, ClassNotFoundException;
     public List<Employee> searchEmployee(String motcle);
-    public Medicament getEmployee(int id);
-    public Medicament updateEmployee( Medicament p);
-    public String deleteEmployee(int id);
+    public Employee getEmployee(int id);
+    public Employee updateEmployee( Employee e);
+    public String deleteEmployee(Employee employee);
 
 
-
+    /***************************************************************************
+     * CRUD COMMANDE Interfaces
+     *
+     * ***************************************************************************/
 
     public String saveCommande (Commande commande) throws SQLException, ClassNotFoundException;
     public List<Commande> searchcommande(String motcle);
-    public Medicament getcommande(int id);
-    public Medicament updatecommande( Medicament p);
+    public Commande getcommande(int id);
+    public Commande updatecommande( Commande c);
     public String deletecommande(int id);
-
-
-
-
 
 
 }
